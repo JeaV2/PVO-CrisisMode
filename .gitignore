@@ -142,5 +142,10 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
-# personal files
+# Android Studio
+android/
+
+# Personal files
 sync.sh
+*.zip
+scratchpad/
