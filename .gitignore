@@ -149,3 +149,9 @@ android/
 sync.sh
 *.zip
 scratchpad/
+
+# Database files
+*.sqlite
+*.db
+*.db3
+*.sql
