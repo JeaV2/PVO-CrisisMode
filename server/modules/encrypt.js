@@ -10,4 +10,8 @@ async function hashPassword(password) {
     return await bcrypt.hash(password, SALT_ROUNDS);
 }
 
-export { hashPassword };
+async function comparePassword(plainPassword, hashedPassword) {
+    return await bcrypt.compare(plainPassword, hashedPassword);
+}
+
+export { hashPassword, comparePassword };

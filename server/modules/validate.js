@@ -37,6 +37,22 @@ function validateSignUpData(data = {}) {
     return errors;
 }
 
+function validateLoginData(data = {}) {
+    const errors = {};
+
+    if (!data.Email || data.Email.trim() === '') {
+        errors.Email = 'Email is verplicht';
+    } else if (!validateEmail(data.Email)) {
+        errors.Email = 'Ongeldig emailadres';
+    }
+
+    if (!data.Wachtwoord || data.Wachtwoord.trim() === '') {
+        errors.Wachtwoord = 'Wachtwoord is verplicht';
+    }
+
+    return errors;
+}
+
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -64,4 +80,4 @@ function validatePassword(password) {
     return passwordErrors;
 }
 
-export { validateSignUpData };
+export { validateSignUpData, validateLoginData };
