@@ -1,0 +1,110 @@
+body {
+	font-family: inter, sans-serif;
+	text-align: center;
+} h2 { font-weight: normal; }
+
+.center { margin: 0 auto 0 auto; }
+
+.logo {
+	margin-top: 17px;
+	height: 46px;
+}
+
+button {
+	outline: none !important;
+	border: none !important;
+	border-radius: 10px;
+
+	background-color: #EF7D00;
+	color: white;
+
+	width: 300px;
+	padding: 10px;
+} button:hover {
+	filter: brightness(1.1);
+	cursor: pointer;
+} button:active { filter: brightness(0.9); }
+
+.account {
+	background-color: #008ACF;
+	border-radius: 15px;
+
+	width: 90vw;
+	height: calc(85vh);
+
+	position: absolute;
+	bottom: 0;
+	left: 5vw;
+
+	overflow-y: auto;
+}
+
+.account > .foto {
+	background-size: 100% 100%;
+	background-color: #F6F5EE;
+
+	border-radius: 100%;
+	margin-bottom: 7px;
+
+	width: 145px;
+	height: 145px;
+}
+
+.account form > div {
+	margin-bottom: 10px;
+	width: 90%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	text-align: left;
+} .account form > div > div {
+	width: 20%;
+}
+
+.account form input {
+	background-color: #F6F5EE;
+
+	outline: none !important;
+	border: none !important;
+	border-radius: 30px;
+
+	padding: 5px 10px;
+	height: 15px;
+}
+
+.account #medals {
+	max-width: 300px;
+	width: 95%;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+
+	margin-bottom: 20px;
+} .account #medals > div {
+	background-color: #F6F5EE;
+	border-radius: 100%;
+
+	width: 60px;
+	height: 60px;
+
+	font-size: 25px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.m1 {
+	background-color: #FEE336 !important;
+	color: #F89702;
+} .m2 {
+	background-color: #D0DCE6 !important;
+	color: #B2B2B2;
+} .m3 {
+	background-color: #D5AA82 !important;
+	color: #B38862;
+} .m- {
+	
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./css/account.css">
+	<title>PVO Account</title>
+</head>
+<body>
+	<img src="./assets/imgs/logo.png" class="logo">
+
+	<div class="account center">
+		<h2>
+			Welkom! <span id="name"></span>
+		</h2>
+		<div class="foto center"></div>
+		Profielfoto
+
+		<form style="margin-top: 10px;">
+			<div class="center">
+				<div>Email</div> <input type="text" name="email" autocomplete="1" required>
+			</div>
+			<div class="center">
+				<div>Password</div> <input type="password" name="password" required>
+			</div>
+			<button type="submit">Update Account</button>
+		</form>
+
+		<h2 style="margin-block-start: 7vh;">Medailles</h2>
+		<div id="medals" class="center">
+			<!-- Medailles geregeld door JS -->
+		</div>
+
+		<button>Sluiten</button>
+	</div>
+
+</body>
+</html>
+
+<script defer>
+	const medals = document.getElementById('medals')
+	for (let idx = 0; idx < 10; idx++) {
+		let rng = (Math.random() * 4) + 1
+		rng = rng > 3.5 ?
+			['-', '✓'][
+			(Math.random() > 0.5) * 1
+		]
+		: Math.floor(rng)
+
+		const div = document.createElement('div')
+		div.innerHTML = rng
+		div.classList.add('m' + rng)
+		medals.appendChild(div)
+	}
+
+	document.getElementById('name').innerHTML = 'Pieter-Jan'
+</script>
