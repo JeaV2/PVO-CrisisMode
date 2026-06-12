@@ -8,7 +8,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "dev": "node server.js",
     "reset-db": "rm crisismode.db && sqlite3 crisismode.db crisimode.sql"
   },
   "dependencies": {
