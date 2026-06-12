@@ -9,6 +9,31 @@ const currentFilePath = fileURLToPath(import.meta.url);
 const currentDirectory = path.dirname(currentFilePath);
 const databasePath = path.resolve(currentDirectory, '../crisismode.db');
 
+const TABLE_COLUMNS = {
+    Gebruikers: [
+        'UUID',
+        'Voornaam',
+        'Achternaam',
+        'Username',
+        'Email',
+        'Wachtwoord',
+        'ProfielFotoPath'
+    ],
+    BehaaldeMedailles: [
+        'UUID',
+        'Casus1',
+        'Casus2',
+        'Casus3',
+        'Casus4',
+        'Casus5',
+        'Casus6',
+        'Casus7',
+        'Casus8',
+        'Casus9',
+        'Casus10'
+    ]
+};
+
 const dbPromise = open({
     filename: databasePath,
     driver: sqlite3.Database
@@ -16,6 +41,18 @@ const dbPromise = open({
 
 function writeToDatabase(data, table) {
     return dbPromise.then(db => {
+        const allowedColumns = TABLE_COLUMNS[table];
+
+        if (!allowedColumns) {
+            throw new Error(`Unknown table: ${table}`);
+        }
+
+        const unexpectedColumns = Object.keys(data).filter(column => !allowedColumns.includes(column));
+
+        if (unexpectedColumns.length > 0) {
+            throw new Error(`Unexpected columns for ${table}: ${unexpectedColumns.join(', ')}`);
+        }
+
         const columns = Object.keys(data).join(', ');
         const placeholders = Object.keys(data).map(() => '?').join(', ');
         const values = Object.values(data);

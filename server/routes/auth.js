@@ -51,7 +51,17 @@ async function register(req, res) {
             return res.status(400).json({ errors: uniqueness });
         }
 
-        await writeToDatabase(data, 'Gebruikers');
+        const gebruikerData = {
+            UUID: data.UUID,
+            Voornaam: data.Voornaam,
+            Achternaam: data.Achternaam,
+            Username: data.Username,
+            Email: data.Email,
+            Wachtwoord: data.Wachtwoord,
+            ProfielFotoPath: data.ProfielFotoPath ?? null
+        };
+
+        await writeToDatabase(gebruikerData, 'Gebruikers');
         await writeToDatabase({ UUID: data.UUID }, 'BehaaldeMedailles');
 
         return res.status(201).json({ message: 'Registratie succesvol' });
