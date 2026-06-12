@@ -1,6 +1,6 @@
-import { validateSignUpData } from '../modules/validate.js';
-import { writeToDatabase, checkUniqueUser } from '../modules/database.js';
-import { hashPassword } from '../modules/encrypt.js';
+import { validateSignUpData, validateLoginData } from '../modules/validate.js';
+import { writeToDatabase, loginGetPassword, checkUniqueUser } from '../modules/database.js';
+import { hashPassword, comparePassword } from '../modules/encrypt.js';
 
 function mapSqliteConstraintErrors(error) {
     if (!error?.code || !String(error.code).startsWith('SQLITE_CONSTRAINT')) {
@@ -77,4 +77,33 @@ async function register(req, res) {
     }
 }
 
-export { register };
+async function login(req, res) {
+    console.log('Login endpoint benaderd');
+    const data = req.body;
+    const errors = validateLoginData(data);
+
+    if (Object.keys(errors).length > 0) {
+        console.log('Validatiefouten:', errors);
+        return res.status(400).json({ errors });
+    }
+
+    const gebruikerData = {
+        Email: data.Email,
+        Wachtwoord: data.Wachtwoord
+    }
+    try {
+        const passwordHash = await loginGetPassword(gebruikerData.Email);
+        let compare = await comparePassword(gebruikerData.Wachtwoord, passwordHash.Wachtwoord);
+        if (await comparePassword(gebruikerData.Wachtwoord, passwordHash.Wachtwoord)) {
+            return res.status(200).json({ message: 'Login succesvol' });
+        } else {
+            console.log('Ongeldig wachtwoord voor email:', gebruikerData.Email);
+            return res.status(401).json({ message: 'Ongeldige inloggegevens' });
+        }
+    } catch (error) {
+        console.error('Login mislukt:', error);
+        return res.status(500).json({ message: 'Interne serverfout' });
+    }
+}
+
+export { register, login };

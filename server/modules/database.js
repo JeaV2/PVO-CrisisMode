@@ -63,6 +63,14 @@ function writeToDatabase(data, table) {
     });
 };
 
+function loginGetPassword(email) {
+    return dbPromise.then(db => {
+        return db.get('SELECT Wachtwoord FROM Gebruikers WHERE Email = ?', [email]);
+    }).catch(err => {
+        throw err;
+    });
+}
+
 async function checkUniqueUser(username, email) {
     const db = await dbPromise;
     const result = {
@@ -84,4 +92,4 @@ async function checkUniqueUser(username, email) {
     return result;
 }
 
-export { writeToDatabase, checkUniqueUser };
+export { writeToDatabase, loginGetPassword, checkUniqueUser };

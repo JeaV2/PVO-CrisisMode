@@ -2,7 +2,7 @@
 import express from 'express';
 
 // Local modules
-import { register } from './routes/auth.js';
+import { register, login } from './routes/auth.js';
 
 const app = express();
 const HOST = '127.0.0.1';
@@ -15,7 +15,7 @@ app.get('/', (_req, res) => {
 });
 
 app.post('/auth/login/', (req, res) => {
-    res.send('Login endpoint');
+    login(req, res);
 });
 
 app.post('/auth/register/', (req, res) => {
