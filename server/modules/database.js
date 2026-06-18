@@ -92,4 +92,30 @@ async function checkUniqueUser(username, email) {
     return result;
 }
 
-export { writeToDatabase, loginGetPassword, checkUniqueUser };
+function mapSqliteConstraintErrors(error) {
+    if (!error?.code || !String(error.code).startsWith('SQLITE_CONSTRAINT')) {
+        return null;
+    }
+
+    const message = String(error.message || '');
+    const errors = {};
+
+    if (message.includes('Gebruikers.Username')) {
+        errors.Username = { unique: false, message: 'Username is al in gebruik' };
+    }
+
+    if (message.includes('Gebruikers.Email')) {
+        errors.Email = { unique: false, message: 'Email is al in gebruik' };
+    }
+
+    if (Object.keys(errors).length > 0) {
+        return { statusCode: 400, body: { errors } };
+    }
+
+    return {
+        statusCode: 400,
+        body: { message: 'Database constraint geschonden' }
+    };
+}
+
+export { writeToDatabase, loginGetPassword, checkUniqueUser, mapSqliteConstraintErrors };
