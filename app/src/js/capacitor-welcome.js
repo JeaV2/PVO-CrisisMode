@@ -60,10 +60,10 @@ window.customElements.define(
         <h1>Capacitor</h1>
       </capacitor-welcome-titlebar>
       <main>
-        <p>
+        <a href="signup.html">
           Capacitor makes it easy to build powerful apps for the app stores, mobile web (Progressive Web Apps), and desktop, all
           with a single code base.
-        </p>
+        </a>
         <h2>Getting Started</h2>
         <p>
           You'll probably need a UI framework to build a full-featured app. Might we recommend
