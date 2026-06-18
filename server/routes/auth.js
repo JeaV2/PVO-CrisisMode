@@ -1,32 +1,6 @@
 import { validateSignUpData, validateLoginData } from '../modules/validate.js';
-import { writeToDatabase, loginGetPassword, checkUniqueUser } from '../modules/database.js';
-import { hashPassword, comparePassword } from '../modules/encrypt.js';
-
-function mapSqliteConstraintErrors(error) {
-    if (!error?.code || !String(error.code).startsWith('SQLITE_CONSTRAINT')) {
-        return null;
-    }
-
-    const message = String(error.message || '');
-    const errors = {};
-
-    if (message.includes('Gebruikers.Username')) {
-        errors.Username = { unique: false, message: 'Username is al in gebruik' };
-    }
-
-    if (message.includes('Gebruikers.Email')) {
-        errors.Email = { unique: false, message: 'Email is al in gebruik' };
-    }
-
-    if (Object.keys(errors).length > 0) {
-        return { statusCode: 400, body: { errors } };
-    }
-
-    return {
-        statusCode: 400,
-        body: { message: 'Database constraint geschonden' }
-    };
-}
+import { writeToDatabase, loginGetPassword, checkUniqueUser, mapSqliteConstraintErrors } from '../modules/database.js';
+import { hashPassword, comparePassword, signToken } from '../modules/encrypt.js';
 
 
 async function register(req, res) {
@@ -63,8 +37,9 @@ async function register(req, res) {
 
         await writeToDatabase(gebruikerData, 'Gebruikers');
         await writeToDatabase({ UUID: data.UUID }, 'BehaaldeMedailles');
+        const token = await signToken({ UUID: data.UUID, Username: data.Username });
 
-        return res.status(201).json({ message: 'Registratie succesvol' });
+        return res.status(201).json({ message: 'Registratie succesvol', token: token });
     } catch (error) {
         const constraintResponse = mapSqliteConstraintErrors(error);
         if (constraintResponse) {
@@ -95,6 +70,7 @@ async function login(req, res) {
         const passwordHash = await loginGetPassword(gebruikerData.Email);
         let compare = await comparePassword(gebruikerData.Wachtwoord, passwordHash.Wachtwoord);
         if (await comparePassword(gebruikerData.Wachtwoord, passwordHash.Wachtwoord)) {
+            const token = await signToken({ Email: gebruikerData.Email });
             return res.status(200).json({ message: 'Login succesvol' });
         } else {
             console.log('Ongeldig wachtwoord voor email:', gebruikerData.Email);
