@@ -41,13 +41,13 @@ const dbPromise = open({
 
 function writeToDatabase(data, table) {
     return dbPromise.then(db => {
-        const allowedColumns = TABLE_COLUMNS[table];
+        const allowedTables = TABLE_COLUMNS[table];
 
-        if (!allowedColumns) {
+        if (!allowedTables) {
             throw new Error(`Unknown table: ${table}`);
         }
 
-        const unexpectedColumns = Object.keys(data).filter(column => !allowedColumns.includes(column));
+        const unexpectedColumns = Object.keys(data).filter(column => !allowedTables.includes(column));
 
         if (unexpectedColumns.length > 0) {
             throw new Error(`Unexpected columns for ${table}: ${unexpectedColumns.join(', ')}`);
@@ -61,6 +61,30 @@ function writeToDatabase(data, table) {
     }).catch(err => {
         throw err;
     });
+};
+
+async function readFromDatabase(data, table, whereClause) {
+    return dbPromise.then(db => {
+        const allowedTables = TABLE_COLUMNS[table];
+
+        if (!allowedTables) {
+            throw new Error(`Unknown table: ${table}`);
+        }
+
+        const unexpectedColumns = data.filter(column => !allowedTables.includes(column));
+
+        if (unexpectedColumns.length > 0) {
+            throw new Error(`Unexpected columns for ${table}: ${unexpectedColumns.join(', ')}`);
+        }
+
+        let columns = data.join(', ');
+        const sql = `SELECT ${columns} FROM ${table} WHERE Email = ?`;
+        return db.get(sql, [whereClause]);
+
+    }).catch(err => {
+        throw err;
+    });
+
 };
 
 function loginGetPassword(email) {
@@ -118,4 +142,4 @@ function mapSqliteConstraintErrors(error) {
     };
 }
 
-export { writeToDatabase, loginGetPassword, checkUniqueUser, mapSqliteConstraintErrors };
+export { writeToDatabase, readFromDatabase, loginGetPassword, checkUniqueUser, mapSqliteConstraintErrors };
