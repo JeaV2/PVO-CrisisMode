@@ -1,0 +1,35 @@
+body {
+    color: #001935;
+    font-family: main;
+}
+
+@font-face {
+    font-family: title;
+    src: url(../assets/fonts/RobotoSerif_UltraCondensed-Bold.ttf);
+}
+
+@font-face {
+    font-family: main;
+    src: url(../assets/fonts/ArchivoNarrow-Regular.ttf);
+}
+
+.title {
+    margin: auto;
+    padding: 1rem;
+    font-family: title;
+}
+
+.signup-box {
+    display: flex;
+    flex-direction: column;
+    background-color: #008ACF;
+    margin: 3rem;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.form-group {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+}
