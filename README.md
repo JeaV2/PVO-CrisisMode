@@ -87,3 +87,51 @@ Of
     }
 }
 ```
+
+### Medailles
+
+GET `/medals`: Haal een lijst van alle medailles van de gebruiker op.
+Input:
+```
+Headers: {
+    Authorization: "Bearer <JWT Token>"
+}
+```
+<sup>Let op, deze data is geen json body, maar een header, de JWT token moet in de Authorization header worden meegegeven.</sup>
+Response:
+```
+{
+  "message": "Token validated",
+  "medals": {
+    "UUID": "de877a66-1b9e-4b4e-bad2-29b8f053f7a6",
+    "Casus1": "bronze",
+    "Casus2": "zilver",
+    "Casus3": "goud",
+    "Casus4": "goud",
+    "Casus5": "zilver",
+    "Casus6": "bronze",
+    "Casus7": "zilver",
+    "Casus8": "goud",
+    "Casus9": "zilver",
+    "Casus10": "goud"
+  }
+}
+```
+Of
+```
+{
+    message: "Authorization header mist of is ongeldig"
+}
+```
+Of 
+```
+{
+    message: "Token ontbreekt"
+}
+```
+Of
+```
+{
+    message: "Foute of verlopen token"
+}
+```
