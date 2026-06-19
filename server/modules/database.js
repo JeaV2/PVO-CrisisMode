@@ -63,37 +63,29 @@ function writeToDatabase(data, table) {
     });
 };
 
-async function readFromDatabase(data, table, whereClause) {
+async function readFromDatabase(data, table, whereColumn, whereClause) {
     return dbPromise.then(db => {
+
         const allowedTables = TABLE_COLUMNS[table];
 
         if (!allowedTables) {
             throw new Error(`Unknown table: ${table}`);
         }
 
-        const unexpectedColumns = data.filter(column => !allowedTables.includes(column));
+        const unexpectedColumns = data.filter(column => !allowedTables.includes(column) && !allowedTables.includes(whereColumn));
 
         if (unexpectedColumns.length > 0) {
             throw new Error(`Unexpected columns for ${table}: ${unexpectedColumns.join(', ')}`);
         }
 
         let columns = data.join(', ');
-        const sql = `SELECT ${columns} FROM ${table} WHERE Email = ?`;
+        const sql = `SELECT ${columns} FROM ${table} WHERE ${whereColumn} = ?`;
         return db.get(sql, [whereClause]);
 
     }).catch(err => {
         throw err;
     });
-
 };
-
-function loginGetPassword(email) {
-    return dbPromise.then(db => {
-        return db.get('SELECT Wachtwoord FROM Gebruikers WHERE Email = ?', [email]);
-    }).catch(err => {
-        throw err;
-    });
-}
 
 async function checkUniqueUser(username, email) {
     const db = await dbPromise;
@@ -142,4 +134,4 @@ function mapSqliteConstraintErrors(error) {
     };
 }
 
-export { writeToDatabase, readFromDatabase, loginGetPassword, checkUniqueUser, mapSqliteConstraintErrors };
+export { writeToDatabase, readFromDatabase, checkUniqueUser, mapSqliteConstraintErrors };

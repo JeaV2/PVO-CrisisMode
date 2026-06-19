@@ -1,5 +1,5 @@
 import { validateSignUpData, validateLoginData } from '../modules/validate.js';
-import { writeToDatabase, readFromDatabase, loginGetPassword, checkUniqueUser, mapSqliteConstraintErrors } from '../modules/database.js';
+import { writeToDatabase, readFromDatabase, checkUniqueUser, mapSqliteConstraintErrors } from '../modules/database.js';
 import { hashPassword, comparePassword, signToken } from '../modules/encrypt.js';
 
 
@@ -72,10 +72,10 @@ async function login(req, res) {
     ];
 
     try {
-        const passwordHash = await loginGetPassword(gebruikerData.Email);
+        const passwordHash = await readFromDatabase(['Wachtwoord'], 'Gebruikers', 'Email', gebruikerData.Email);
         let compare = await comparePassword(gebruikerData.Wachtwoord, passwordHash.Wachtwoord);
         if (await comparePassword(gebruikerData.Wachtwoord, passwordHash.Wachtwoord)) {
-            let jwtPayload = await readFromDatabase(dataToGet, 'Gebruikers', gebruikerData.Email)
+            let jwtPayload = await readFromDatabase(dataToGet, 'Gebruikers', 'Email', gebruikerData.Email)
             const token = await signToken({ UUID: jwtPayload.UUID, Username: jwtPayload.Username });
             return res.status(200).json({ message: 'Login succesvol', token: token });
         } else {
