@@ -30,7 +30,8 @@ const TABLE_COLUMNS = {
         'Casus7',
         'Casus8',
         'Casus9',
-        'Casus10'
+        'Casus10',
+        '*'
     ]
 };
 
