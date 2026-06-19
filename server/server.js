@@ -1,12 +1,17 @@
 // Node modules
 import express from 'express';
+import 'dotenv/config';
 
 // Local modules
-import { register } from './routes/auth.js';
+import { register, login } from './routes/auth.js';
 
 const app = express();
-const HOST = '127.0.0.1';
-const PORT = 5500;
+const HOST = process.env.HOST;
+const PORT = process.env.PORT;
+
+if (!HOST || !PORT) {
+    throw new Error('HOST and PORT environment variables must be set');
+}
 
 app.use(express.json());
 
@@ -15,11 +20,15 @@ app.get('/', (_req, res) => {
 });
 
 app.post('/auth/login/', (req, res) => {
-    res.send('Login endpoint');
+    login(req, res);
 });
 
 app.post('/auth/register/', (req, res) => {
     register(req, res);
+});
+
+app.post('/medals/', (req, res) => {
+
 });
 
 

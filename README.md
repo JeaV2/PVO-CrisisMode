@@ -14,6 +14,9 @@ https://www.conventionalcommits.org/en/v1.0.0/
 <sup>Opmerking: zorg ervoor dat de server en app op het zelfde netwerk zitten, anders kunnen ze niet met elkaar communiceren.</sup>
 
 ## API Endpoints
+
+### Registratie
+
 POST `/auth/register`: Registreer een nieuwe gebruiker.
 Input:
 ```
@@ -21,8 +24,8 @@ Input:
     Voornaam: "John",
     Achternaam: "Doe"
     Username: "johndoe",
-    email: "john@example.com",
-    password: "password123"
+    Email: "john@example.com",
+    Wachtwoord: "password123"
 }
 ```
 Response:
@@ -47,6 +50,40 @@ Of
     errors: {
         Username: { unique: false, message: 'Username is al in gebruik' },
         Email: { unique: false, message: 'Email is al in gebruik' }
+    }
+}
+```
+
+### Inloggen
+
+POST `/auth/login`: Log in met een bestaande gebruiker.
+Input:
+```
+{
+    Email: "john@example.com",
+    Wachtwoord: "password123"
+}
+```
+
+Response:
+```
+{
+    message: "Login succesvol",
+    token: "<JWT Token>"
+}
+```
+Of
+```
+{
+    message: "Ongeldige inloggegevens"
+}
+```
+Of 
+```
+{
+    errors: {
+        "email": "Email is verplicht",
+        "wachtwoord": "Wachtwoord is verplicht"
     }
 }
 ```

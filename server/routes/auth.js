@@ -1,32 +1,6 @@
-import { validateSignUpData } from '../modules/validate.js';
-import { writeToDatabase, checkUniqueUser } from '../modules/database.js';
-import { hashPassword } from '../modules/encrypt.js';
-
-function mapSqliteConstraintErrors(error) {
-    if (!error?.code || !String(error.code).startsWith('SQLITE_CONSTRAINT')) {
-        return null;
-    }
-
-    const message = String(error.message || '');
-    const errors = {};
-
-    if (message.includes('Gebruikers.Username')) {
-        errors.Username = { unique: false, message: 'Username is al in gebruik' };
-    }
-
-    if (message.includes('Gebruikers.Email')) {
-        errors.Email = { unique: false, message: 'Email is al in gebruik' };
-    }
-
-    if (Object.keys(errors).length > 0) {
-        return { statusCode: 400, body: { errors } };
-    }
-
-    return {
-        statusCode: 400,
-        body: { message: 'Database constraint geschonden' }
-    };
-}
+import { validateSignUpData, validateLoginData } from '../modules/validate.js';
+import { writeToDatabase, readFromDatabase, checkUniqueUser, mapSqliteConstraintErrors } from '../modules/database.js';
+import { hashPassword, comparePassword, signToken } from '../modules/encrypt.js';
 
 
 async function register(req, res) {
@@ -63,8 +37,9 @@ async function register(req, res) {
 
         await writeToDatabase(gebruikerData, 'Gebruikers');
         await writeToDatabase({ UUID: data.UUID }, 'BehaaldeMedailles');
+        const token = await signToken({ UUID: data.UUID, Username: data.Username });
 
-        return res.status(201).json({ message: 'Registratie succesvol' });
+        return res.status(201).json({ message: 'Registratie succesvol', token: token });
     } catch (error) {
         const constraintResponse = mapSqliteConstraintErrors(error);
         if (constraintResponse) {
@@ -77,4 +52,40 @@ async function register(req, res) {
     }
 }
 
-export { register };
+async function login(req, res) {
+    console.log('Login endpoint benaderd');
+    const data = req.body;
+    const errors = validateLoginData(data);
+
+    if (Object.keys(errors).length > 0) {
+        console.log('Validatiefouten:', errors);
+        return res.status(400).json({ errors });
+    }
+
+    const gebruikerData = {
+        Email: data.Email,
+        Wachtwoord: data.Wachtwoord
+    }
+    const dataToGet = [
+        "UUID",
+        "Username"
+    ];
+
+    try {
+        const passwordHash = await readFromDatabase(['Wachtwoord'], 'Gebruikers', 'Email', gebruikerData.Email);
+        let compare = await comparePassword(gebruikerData.Wachtwoord, passwordHash.Wachtwoord);
+        if (await comparePassword(gebruikerData.Wachtwoord, passwordHash.Wachtwoord)) {
+            let jwtPayload = await readFromDatabase(dataToGet, 'Gebruikers', 'Email', gebruikerData.Email)
+            const token = await signToken({ UUID: jwtPayload.UUID, Username: jwtPayload.Username });
+            return res.status(200).json({ message: 'Login succesvol', token: token });
+        } else {
+            console.log('Ongeldig wachtwoord voor email:', gebruikerData.Email);
+            return res.status(401).json({ message: 'Ongeldige inloggegevens' });
+        }
+    } catch (error) {
+        console.error('Login mislukt:', error);
+        return res.status(500).json({ message: 'Interne serverfout' });
+    }
+}
+
+export { register, login };

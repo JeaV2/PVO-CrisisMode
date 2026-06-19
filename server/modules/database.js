@@ -41,13 +41,13 @@ const dbPromise = open({
 
 function writeToDatabase(data, table) {
     return dbPromise.then(db => {
-        const allowedColumns = TABLE_COLUMNS[table];
+        const allowedTables = TABLE_COLUMNS[table];
 
-        if (!allowedColumns) {
+        if (!allowedTables) {
             throw new Error(`Unknown table: ${table}`);
         }
 
-        const unexpectedColumns = Object.keys(data).filter(column => !allowedColumns.includes(column));
+        const unexpectedColumns = Object.keys(data).filter(column => !allowedTables.includes(column));
 
         if (unexpectedColumns.length > 0) {
             throw new Error(`Unexpected columns for ${table}: ${unexpectedColumns.join(', ')}`);
@@ -58,6 +58,30 @@ function writeToDatabase(data, table) {
         const values = Object.values(data);
         const sql = `INSERT INTO ${table} (${columns}) VALUES (${placeholders})`;
         return db.run(sql, values);
+    }).catch(err => {
+        throw err;
+    });
+};
+
+async function readFromDatabase(data, table, whereColumn, whereClause) {
+    return dbPromise.then(db => {
+
+        const allowedTables = TABLE_COLUMNS[table];
+
+        if (!allowedTables) {
+            throw new Error(`Unknown table: ${table}`);
+        }
+
+        const unexpectedColumns = data.filter(column => !allowedTables.includes(column) && !allowedTables.includes(whereColumn));
+
+        if (unexpectedColumns.length > 0) {
+            throw new Error(`Unexpected columns for ${table}: ${unexpectedColumns.join(', ')}`);
+        }
+
+        let columns = data.join(', ');
+        const sql = `SELECT ${columns} FROM ${table} WHERE ${whereColumn} = ?`;
+        return db.get(sql, [whereClause]);
+
     }).catch(err => {
         throw err;
     });
@@ -84,4 +108,30 @@ async function checkUniqueUser(username, email) {
     return result;
 }
 
-export { writeToDatabase, checkUniqueUser };
+function mapSqliteConstraintErrors(error) {
+    if (!error?.code || !String(error.code).startsWith('SQLITE_CONSTRAINT')) {
+        return null;
+    }
+
+    const message = String(error.message || '');
+    const errors = {};
+
+    if (message.includes('Gebruikers.Username')) {
+        errors.Username = { unique: false, message: 'Username is al in gebruik' };
+    }
+
+    if (message.includes('Gebruikers.Email')) {
+        errors.Email = { unique: false, message: 'Email is al in gebruik' };
+    }
+
+    if (Object.keys(errors).length > 0) {
+        return { statusCode: 400, body: { errors } };
+    }
+
+    return {
+        statusCode: 400,
+        body: { message: 'Database constraint geschonden' }
+    };
+}
+
+export { writeToDatabase, readFromDatabase, checkUniqueUser, mapSqliteConstraintErrors };
