@@ -1,0 +1,178 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+html,
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.lespad-container {
+    width: 100%;
+    min-height: 100dvh;
+    background: white;
+}
+
+.lespad-header {
+    position: sticky;
+    top: 0;
+    height: 60px;
+    width: 100%;
+    background: white;
+    border-bottom: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 1000;
+}
+
+.lespad-header-logo {
+    width: 48px;
+    height: 36px;
+    background-image: url("../assets/imgs/logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    flex-shrink: 0;
+}
+
+.lespad-header-title {
+    flex: 1;
+    text-align: center;
+}
+
+.lespad-header-title h1 {
+    font-size: clamp(18px,4vw,26px);
+}
+
+.lespad-header-title h3 {
+    font-size: clamp(10px,2.5vw,14px);
+    font-weight: normal;
+}
+
+.lespad-header-account {
+    width: 36px;
+    height: 36px;
+    background: black;
+}
+
+.lespad-path {
+    position: relative;
+    width: 100%;
+    height: 2400px;
+    overflow: hidden;
+}
+
+.lespad-road {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.lespad-road path {
+    fill: none;
+    stroke: rgb(217,124,25);
+    stroke-width: 28;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.lesson {
+    position: absolute;
+    width: 120px;
+    height: 70px;
+    border-radius: 999px;
+    background: rgb(26,161,231);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    transform: translate(-50%,-50%);
+    z-index: 10;
+}
+
+.lesson h3 {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.lesson-callout {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    pointer-events: none;
+}
+
+.lesson-callout img {
+    width: 220px;
+    display: block;
+}
+
+.lesson-callout-left span {
+    position: absolute;
+    top: 0;
+    left: 0%;
+    width: 80%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 15px;
+}
+
+.lesson-callout-right span {
+    position: absolute;
+    top: 0;
+    left: 17%;
+    width: 80%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 15px;
+}
+
+@media (min-width:768px) {
+
+    .lespad-header {
+        height: 80px;
+    }
+
+    .lespad-header-logo {
+        width: 70px;
+        height: 50px;
+    }
+
+    .lespad-header-account {
+        width: 50px;
+        height: 50px;
+    }
+
+    .lesson {
+        width: 170px;
+        height: 95px;
+    }
+
+    .lesson h3 {
+        font-size: 22px;
+    }
+
+    .lesson-callout img {
+        width: 220px;
+    }
+
+    .lespad-road path {
+        stroke-width: 36;
+    }
+}
