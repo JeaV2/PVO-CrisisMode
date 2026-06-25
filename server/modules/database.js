@@ -40,6 +40,15 @@ const dbPromise = open({
     driver: sqlite3.Database
 });
 
+
+/**
+ * 
+ * @param {*} data data to write to the database
+ * @param {*} table to which table to write
+ * @param {*} whereColumn 
+ * @param {*} whereClause 
+ * @returns 
+ */
 async function writeToDatabase(data, table, whereColumn, whereClause) {
     return dbPromise.then(db => {
         const allowedTables = TABLE_COLUMNS[table];
@@ -78,6 +87,14 @@ async function writeToDatabase(data, table, whereColumn, whereClause) {
     });
 };
 
+/**
+ * 
+ * @param {*} data data to read from the database
+ * @param {*} table from which table to read
+ * @param {*} whereColumn 
+ * @param {*} whereClause 
+ * @returns 
+ */
 async function readFromDatabase(data, table, whereColumn, whereClause) {
     return dbPromise.then(db => {
 
@@ -102,6 +119,12 @@ async function readFromDatabase(data, table, whereColumn, whereClause) {
     });
 };
 
+/**
+ * 
+ * @param {*} username the username to check for
+ * @param {*} email the email address to check for
+ * @returns 
+ */
 async function checkUniqueUser(username, email) {
     const db = await dbPromise;
     const result = {

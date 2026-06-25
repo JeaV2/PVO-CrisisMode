@@ -41,4 +41,27 @@ async function getMedals(req, res) {
     }
 }
 
-export { getMedals };
+async function createMedal(req, res) {
+
+    try {
+        const decodedToken = getVerifiedToken(req, res);
+        if (!decodedToken) {
+            return;
+        }
+
+        data = req.body;
+
+        writeToDatabase("BehaaldeMedailles", )
+
+        
+    } catch (error) {
+        if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Foute of verlopen token' });
+        }
+
+        console.error('Create medal endpoint failed:', error);
+        return res.status(500).json({ message: 'Interne serverfout' });
+    }
+}
+
+export { getMedals, createMedal };
