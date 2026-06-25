@@ -35,8 +35,8 @@ async function register(req, res) {
             ProfielFotoPath: data.ProfielFotoPath ?? null
         };
 
-        await writeToDatabase(gebruikerData, 'Gebruikers');
-        await writeToDatabase({ UUID: data.UUID }, 'BehaaldeMedailles');
+        await writeToDatabase(gebruikerData, 'Gebruikers', 'UUID', data.UUID);
+        await writeToDatabase({ UUID: data.UUID }, 'BehaaldeMedailles', 'UUID', data.UUID);
         const token = await signToken({ UUID: data.UUID, Username: data.Username });
 
         return res.status(201).json({ message: 'Registratie succesvol', token: token });

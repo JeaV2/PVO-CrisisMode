@@ -40,7 +40,7 @@ const dbPromise = open({
     driver: sqlite3.Database
 });
 
-function writeToDatabase(data, table) {
+async function writeToDatabase(data, table, whereColumn, whereClause) {
     return dbPromise.then(db => {
         const allowedTables = TABLE_COLUMNS[table];
 
@@ -48,16 +48,30 @@ function writeToDatabase(data, table) {
             throw new Error(`Unknown table: ${table}`);
         }
 
-        const unexpectedColumns = Object.keys(data).filter(column => !allowedTables.includes(column));
+        const rowData = {
+            ...data,
+            [whereColumn]: whereClause
+        };
+        const columns = Object.keys(rowData);
+        const unexpectedColumns = columns.filter(column => !allowedTables.includes(column));
 
         if (unexpectedColumns.length > 0) {
             throw new Error(`Unexpected columns for ${table}: ${unexpectedColumns.join(', ')}`);
         }
 
-        const columns = Object.keys(data).join(', ');
-        const placeholders = Object.keys(data).map(() => '?').join(', ');
-        const values = Object.values(data);
-        const sql = `INSERT INTO ${table} (${columns}) VALUES (${placeholders})`;
+        const placeholders = columns.map(() => '?').join(', ');
+        const values = Object.values(rowData);
+        const updateColumns = columns.filter(column => column !== whereColumn);
+
+        let sql = `INSERT INTO ${table} (${columns.join(', ')}) VALUES (${placeholders})`;
+
+        if (updateColumns.length > 0) {
+            const updateAssignments = updateColumns.map(column => `${column} = excluded.${column}`).join(', ');
+            sql += ` ON CONFLICT(${whereColumn}) DO UPDATE SET ${updateAssignments}`;
+        } else {
+            sql += ` ON CONFLICT(${whereColumn}) DO NOTHING`;
+        }
+
         return db.run(sql, values);
     }).catch(err => {
         throw err;
