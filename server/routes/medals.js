@@ -68,6 +68,12 @@ async function createMedal(req, res) {
             [casus]: medalResult.grade
         };
 
+        const existingMedals = await readFromDatabase(['*'], 'BehaaldeMedailles', 'UUID', decodedToken.UUID);
+        console.log('Existing medals:', existingMedals);
+        if (existingMedals?.[casus] != null) {
+            return res.status(409).json({ message: 'Medaille voor deze casus is al toegevoegd' });
+        }
+
         await writeToDatabase(medalData, 'BehaaldeMedailles', 'UUID', decodedToken.UUID);
 
         return res.status(201).json({ message: 'Medaille succesvol toegevoegd' });
