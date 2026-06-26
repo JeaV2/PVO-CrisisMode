@@ -1,5 +1,17 @@
 # PVO-CrisisMode
 
+- [PVO-CrisisMode](#pvo-crisismode)
+  - [Begrijp dit als je een commit message schijft!](#begrijp-dit-als-je-een-commit-message-schijft)
+  - [Installatie](#installatie)
+  - [API Endpoints](#api-endpoints)
+    - [authenticatie](#authenticatie)
+      - [Registratie](#registratie)
+      - [Inloggen](#inloggen)
+    - [Medailles](#medailles)
+      - [Haal medailles op](#haal-medailles-op)
+    - [Maak medaille aan](#maak-medaille-aan)
+
+
 ## Begrijp dit als je een commit message schijft!
 https://www.conventionalcommits.org/en/v1.0.0/
 
@@ -15,7 +27,9 @@ https://www.conventionalcommits.org/en/v1.0.0/
 
 ## API Endpoints
 
-### Registratie
+### authenticatie
+
+#### Registratie
 
 POST `/auth/register`: Registreer een nieuwe gebruiker.
 Input:
@@ -54,7 +68,7 @@ Of
 }
 ```
 
-### Inloggen
+#### Inloggen
 
 POST `/auth/login`: Log in met een bestaande gebruiker.
 Input:
@@ -89,6 +103,8 @@ Of
 ```
 
 ### Medailles
+
+#### Haal medailles op
 
 GET `/medals`: Haal een lijst van alle medailles van de gebruiker op.
 Input:
@@ -133,5 +149,36 @@ Of
 ```
 {
     message: "Foute of verlopen token"
+}
+```
+
+### Maak medaille aan
+
+POST `/medals`: Maak een nieuwe medaille aan voor de gebruiker.
+Input:
+```
+Headers: {
+    Authorization: "Bearer <JWT Token>"
+}
+Body: {
+    casus: "Casus1",
+}
+```
+Response:
+```
+{
+    message: "Medaille succesvol aangemaakt",
+}
+```
+Of
+```
+{
+    message: "Ongeldige casus"
+}
+```
+Of
+```
+{
+    message: "Deze casus is nog niet vrijgegeven."
 }
 ```
