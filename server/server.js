@@ -6,7 +6,7 @@ import 'dotenv/config';
 
 // Local modules
 import { register, login } from './routes/auth.js';
-import { getMedals } from './routes/medals.js';
+import { getMedals, createMedal } from './routes/medals.js';
 
 const app = express();
 const HOST = process.env.HOST;
@@ -33,6 +33,10 @@ app.post('/auth/register/', (req, res) => {
 
 app.get('/medals/', (req, res) => {
     getMedals(req, res);
+});
+
+app.post('/medal/', (req, res) => {
+    createMedal(req, res);
 });
 
 
