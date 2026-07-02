@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+    <link rel="stylesheet" href="css/signup.css">
+    <script type="module" src="./js/login.js" defer></script>
+</head>
+
+<body>
+    <img class="logo" src="./assets/imgs/logo.png" alt="PVO logo">
+    <div class="new-account">
+
+        <h1 class="title">Log in</h1>
+        <form id="signup">
+            <div class="signup-box">
+
+                <div class="labels">
+                    <label for="email">Email:</label>
+                    <label for="wachtwoord">Wachtwoord:</label>
+                </div>
+
+                <div class="inputs">
+                    <input type="email" name="email" id="email" required>
+                    <input type="password" name="password" id="password" required>
+                </div>
+
+            </div>
+            <div id="result"></div>
+            <button type="submit" class="formButton">Log in</button>
+            <p>Nog geen account? <a href="signup.html">Maak dan een account aan.</a></p>
+        </form>
+    </div>
+</body>
+
+</html>
