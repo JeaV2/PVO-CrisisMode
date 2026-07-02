@@ -1,5 +1,7 @@
 import { Preferences } from '@capacitor/preferences';
 
+import { SERVER_IP, SERVER_PORT } from './variables.js';
+
 document.getElementById('signup').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -13,7 +15,7 @@ document.getElementById('signup').addEventListener('submit', async (e) => {
     }
 
     try {
-        const response = await fetch('http://127.0.0.1:5500/auth/login', {
+        const response = await fetch(`http://${SERVER_IP}:${SERVER_PORT}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -25,10 +27,10 @@ document.getElementById('signup').addEventListener('submit', async (e) => {
 
         if (response.ok) {
             const token = JSON.stringify(result.token)
-                await Preferences.set({
-                    key: 'token',
-                    value: token,
-                });
+            await Preferences.set({
+                key: 'token',
+                value: token,
+            });
             window.location.replace("lespad.html")
             resultDiv.className = 'success';
             e.target.reset();

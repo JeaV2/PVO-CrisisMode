@@ -1,0 +1,4 @@
+const SERVER_IP = "192.168.2.242";
+const SERVER_PORT = 5500;
+
+export { SERVER_IP, SERVER_PORT };

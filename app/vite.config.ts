@@ -6,5 +6,12 @@ export default defineConfig({
     outDir: '../dist',
     minify: false,
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: './src/index.html',
+        signup: './src/signup.html',
+        login: './src/login.html',
+      },
+    },
   },
 });

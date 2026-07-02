@@ -2,6 +2,10 @@
   "appId": "dev.jeav2.pvocrisismode",
   "appName": "CrisisMode – Train je Reacties, Red de Situatie",
   "webDir": "dist",
+  "server": {
+    "androidScheme": "http",
+    "cleartext": true
+  },
   "plugins": {
     "SplashScreen": {
     }
