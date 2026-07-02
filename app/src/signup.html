@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>signup</title>
     <link rel="stylesheet" href="css/signup.css">
+    <script src="./js/signup.js" defer></script>
 </head>
+
 <body>
-    <img src="./assets/imgs/logo.png" alt="PVO logo">
+    <img class="logo" src="./assets/imgs/logo.png" alt="PVO logo">
     <div class="new-account">
 
-    <h1 class="title">Nieuw Account</h1>
+        <h1 class="title">Nieuw Account</h1>
+        <form id="signup">
+            <div class="signup-box">
 
-    <div class="signup-box">
+                <div class="labels">
+                    <label for="voornaam">Voornaam:</label>
+                    <label for="achternaam">Achternaam:</label>
+                    <label for="email">Email:</label>
+                    <label for="username">Gebruikersnaam:</label>
+                    <label for="wachtwoord">Wachtwoord:</label>
+                </div>
 
-        <div class="labels">
-        <label for="voornaam">Voornaam:</label>
-        <label for="achternaam">Achternaam:</label>
-        <label for="email">Email:</label>
-        <label for="username">Gebruikersnaam:</label>
-        <label for="wachtwoord">Wachtwoord:</label>
-        </div>
+                <div class="inputs">
+                    <input type="text" name="voornaam" id="voornaam" required>
+                    <input type="text" name="achternaam" id="achternaam" required>
+                    <input type="email" name="email" id="email" required>
+                    <input type="text" name="username" id="username" required>
+                    <input type="password" name="password" id="password" required>
+                </div>
 
-        <div class="inputs">
-        <input type="text" name="voornaam" id="voornaam">
-        <input type="text" name="achternaam" id="achternaam">
-        <input type="email" name="email" id="email">
-        <input type="text" name="username" id="username">
-        <input type="wachtwoord" name="wachtwoord" id="wachtwoord">
-        </div>
-
+            </div>
+            <div id="result"></div>
+            <button type="submit" class="formButton">Sign-up</button>
+        </form>
     </div>
-</div>
 </body>
+
 </html>
