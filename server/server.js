@@ -1,6 +1,8 @@
 // Node modules
 import express from 'express';
+import cors from 'cors';
 import 'dotenv/config';
+
 
 // Local modules
 import { register, login } from './routes/auth.js';
@@ -15,6 +17,7 @@ if (!HOST || !PORT) {
 }
 
 app.use(express.json());
+app.use(cors());
 
 app.get('/', (_req, res) => {
     res.send('Server is running');
