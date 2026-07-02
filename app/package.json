@@ -15,8 +15,10 @@
   "dependencies": {
     "@capacitor/android": "^8.4.0",
     "@capacitor/camera": "latest",
-    "@capacitor/core": "latest",
-    "@capacitor/splash-screen": "latest"
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/preferences": "^8.0.1",
+    "@capacitor/splash-screen": "latest",
+    "dotenv": "^17.4.2"
   },
   "devDependencies": {
     "@capacitor/cli": "latest",

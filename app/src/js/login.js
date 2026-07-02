@@ -3,23 +3,17 @@ import { Preferences } from '@capacitor/preferences';
 document.getElementById('signup').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const voornaam = document.getElementById("voornaam").value
-    const achternaam = document.getElementById("achternaam").value
     const email = document.getElementById("email").value
-    const username = document.getElementById("username").value
     const password = document.getElementById("password").value
     const resultDiv = document.getElementById('result');
 
     const Data = {
-        "Voornaam": voornaam,
-        "Achternaam": achternaam,
-        "Username": username,
         "Email": email,
         "Wachtwoord": password
     }
 
     try {
-        const response = await fetch('http://127.0.0.1:5500/auth/register', {
+        const response = await fetch('http://127.0.0.1:5500/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -35,7 +29,7 @@ document.getElementById('signup').addEventListener('submit', async (e) => {
                     key: 'token',
                     value: token,
                 });
-            resultDiv.textContent = 'Succes! Gebruiker geregistreerd! U kunt nu inloggen.';
+            window.location.replace("lespad.html")
             resultDiv.className = 'success';
             e.target.reset();
         } else {
@@ -48,3 +42,4 @@ document.getElementById('signup').addEventListener('submit', async (e) => {
     }
 
 })
+

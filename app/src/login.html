@@ -6,37 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>signup</title>
     <link rel="stylesheet" href="css/signup.css">
-    <script type="module" src="./js/signup.js" defer></script>
+    <script type="module" src="./js/login.js" defer></script>
 </head>
 
 <body>
     <img class="logo" src="./assets/imgs/logo.png" alt="PVO logo">
     <div class="new-account">
 
-        <h1 class="title">Nieuw Account</h1>
+        <h1 class="title">Log in</h1>
         <form id="signup">
             <div class="signup-box">
 
                 <div class="labels">
-                    <label for="voornaam">Voornaam:</label>
-                    <label for="achternaam">Achternaam:</label>
                     <label for="email">Email:</label>
-                    <label for="username">Gebruikersnaam:</label>
                     <label for="wachtwoord">Wachtwoord:</label>
                 </div>
 
                 <div class="inputs">
-                    <input type="text" name="voornaam" id="voornaam" required>
-                    <input type="text" name="achternaam" id="achternaam" required>
                     <input type="email" name="email" id="email" required>
-                    <input type="text" name="username" id="username" required>
                     <input type="password" name="password" id="password" required>
                 </div>
 
             </div>
             <div id="result"></div>
-            <p>Al een account? <a href="login.html">Log dan in.</a></p>
-            <button type="submit" class="formButton">Sign-up</button>
+            <button type="submit" class="formButton">Log in</button>
+            <p>Nog geen account? <a href="signup.html">Maak dan een account aan.</a></p>
         </form>
     </div>
 </body>
